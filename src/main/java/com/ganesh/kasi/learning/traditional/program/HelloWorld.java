@@ -1,5 +1,7 @@
 package com.ganesh.kasi.learning.traditional.program;
 
+import org.jetbrains.annotations.NotNull;
+
 /**
  * Created by ganeshkasi on 24/09/15.
  */
@@ -9,9 +11,9 @@ class PrintMsg {
     }
 }
 
-public class HelloWorld {
+class HelloWorld {
     public static void main(String[] args) {
-        PrintMsg printMsg = new PrintMsg(); // new keyword creates and allocates memory. tightly coupled
+        @NotNull PrintMsg printMsg = new PrintMsg(); // new keyword creates and allocates memory. tightly coupled
         printMsg.printMsg();
     }
 }

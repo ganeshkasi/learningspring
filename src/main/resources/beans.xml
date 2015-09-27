@@ -1,8 +1,152 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-       xmlns="http://www.springframework.org/schema/beans"
-       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+       xmlns:context="http://www.springframework.org/schema/context" xmlns="http://www.springframework.org/schema/beans"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://www.springframework.org/schema/context
+       http://www.springframework.org/schema/context/spring-context-3.0.xsd">
 
+    <!--Bean with Scope-->
     <bean id="printMsgBeanID" name="printMsgBeanName" class="com.ganesh.kasi.learning.spring.program.PrintMsg"
-          scope="singleton"/>
+          scope="singleton">
+        <property name="welcomeMessage" value="Hello World!"/>
+    </bean>
+
+    <context:annotation-config/>
+    <!--Bean with getter setter Injection-->
+    <bean id="getterSetterInjID" name="getterSetterInjID"
+          class="com.ganesh.kasi.learning.spring.program.GetterSetterInj">
+        <property name="empID" value="587366"/>
+        <property name="name" value="Ganesh Kasi"/>
+    </bean>
+
+    <!--Bean with Constructor Injection with type declaration-->
+    <bean id="constructorInjID" name="constructorInjName"
+          class="com.ganesh.kasi.learning.spring.program.ConstructorInj">
+        <constructor-arg name="name" value="Ganesh Kasi" type="java.lang.String"/>
+        <constructor-arg name="EmpID" value="587366" type="int"/>
+    </bean>
+
+    <!--Bean with constructor injection,
+        reference to another bean-->
+    <bean id="injectObjectID" name="injectObjectName" class="com.ganesh.kasi.learning.spring.program.InjectObject">
+        <property name="constructorInj" ref="constructorInjID"/>
+    </bean>
+
+    <!--Bean with Inner Beans
+        note: Inner bean does not require separate Id or Name for its bean declaration / definition-->
+    <bean id="innerBeanObjectID" name="innerBeanObjectName"
+          class="com.ganesh.kasi.learning.spring.program.InnerBeanObject">
+        <property name="constructorInj">
+            <bean class="com.ganesh.kasi.learning.spring.program.ConstructorInj">
+                <constructor-arg name="name" value="Ganesh Kasi" type="java.lang.String"/>
+                <constructor-arg name="EmpID" value="587366" type="int"/>
+            </bean>
+        </property>
+    </bean>
+
+    <!--setting alias-->
+    <alias name="printMsgBeanID" alias="printMsgAlias"/>
+
+    <!--Bean with Collections and autoWire byName-->
+    <bean class="com.ganesh.kasi.learning.spring.program.CollectionInit" autowire="byName">
+        <property name="usersList">
+            <list>
+                <value>ganesh</value>
+                <value>kasi</value>
+            </list>
+        </property>
+
+        <property name="usersSet">
+            <set>
+                <value>ganesh</value>
+                <value>kasi</value>
+            </set>
+        </property>
+
+        <property name="usersMap">
+            <map>
+                <entry key="name" value="ganesh" value-type="java.lang.String"/>
+                <entry key="fatherName" value="kasi" value-type="java.lang.String"/>
+            </map>
+        </property>
+    </bean>
+
+    <!--bean with inheritance & abstract-->
+    <bean id="springBeanInheritance_001" class="com.ganesh.kasi.learning.spring.program.SpringBeanInheritance"
+          abstract="true">
+        <property name="message_001" ref="printMsg_001BeanID"/>
+        <!--<property name="message_002" ref="printMsg_002BeanID"/>
+        <property name="message_003" ref="printMsg_003BeanID"/>-->
+    </bean>
+
+    <bean id="springBeanInheritance_002" class="com.ganesh.kasi.learning.spring.program.SpringBeanInheritance"
+          parent="springBeanInheritance_001">
+        <!--<property name="message_002" ref="printMsg_002BeanID"/>-->
+        <property name="message_003" ref="printMsg_003BeanID"/>
+    </bean>
+
+    <bean id="printMsg_001BeanID" name="printMsg_001BeanName" class="com.ganesh.kasi.learning.spring.program.PrintMsg">
+        <property name="welcomeMessage" value="Hello World 001 !"/>
+    </bean>
+
+    <bean id="printMsg_002BeanID" name="printMsg_002BeanName" class="com.ganesh.kasi.learning.spring.program.PrintMsg">
+        <property name="welcomeMessage" value="Hello World 002 !"/>
+    </bean>
+
+    <bean id="printMsg_003BeanID" name="printMsg_003BeanName" class="com.ganesh.kasi.learning.spring.program.PrintMsg">
+        <property name="welcomeMessage" value="Hello World 003 !"/>
+    </bean>
+
+    <!--bean with inheritance & collections merge-->
+    <bean id="springBeanInheritanceListMerge_001"
+          class="com.ganesh.kasi.learning.spring.program.SpringBeanInheritanceListMerge">
+        <property name="message_004">
+            <list>
+                <ref bean="printMsg_001BeanID"/>
+            </list>
+        </property>
+    </bean>
+
+    <bean id="springBeanInheritanceListMerge_002"
+          class="com.ganesh.kasi.learning.spring.program.SpringBeanInheritanceListMerge"
+          parent="springBeanInheritanceListMerge_001">
+        <property name="message_004">
+            <list>
+                <ref bean="printMsg_002BeanID"/>
+                <ref bean="printMsg_003BeanID"/>
+            </list>
+        </property>
+    </bean>
+
+    <bean id="springBeanInheritanceListMerge_003"
+          class="com.ganesh.kasi.learning.spring.program.SpringBeanInheritanceListMerge"
+          parent="springBeanInheritanceListMerge_001" init-method="userDefinedinit" destroy-method="userDefinedDestroy">
+        <property name="message_004">
+            <list merge="true">
+                <ref bean="printMsg_002BeanID"/>
+                <ref bean="printMsg_003BeanID"/>
+            </list>
+        </property>
+    </bean>
+
+    <bean class="com.ganesh.kasi.learning.spring.program.DisplayNameBeanPostProcessor"/>
+
+    <!--Code to an Interface using DI-->
+    <bean id="circleID" name="circleName" class="com.ganesh.kasi.learning.spring.program.Circle">
+        <property name="value" value="100"/>
+    </bean>
+
+    <bean id="triangleID" name="triangleName" class="com.ganesh.kasi.learning.spring.program.Triangle">
+        <property name="value" value="100"/>
+    </bean>
+
+    <bean id="rectangleID" name="rectangleName" class="com.ganesh.kasi.learning.spring.program.Rectangle">
+        <property name="value" value="100"/>
+    </bean>
+
+    <!--its not necessary to create bean-->
+    <bean class="org.springframework.beans.factory.annotation.RequiredAnnotationBeanPostProcessor"/>
+
+
 </beans>
