@@ -13,7 +13,7 @@ class PrintMsg {
 
 class HelloWorld {
     public static void main(String[] args) {
-        @NotNull PrintMsg printMsg = new PrintMsg(); // new keyword creates and allocates memory. tightly coupled
+        PrintMsg printMsg = new PrintMsg(); // new keyword creates and allocates memory. tightly coupled
         printMsg.printMsg();
     }
 }
