@@ -3,7 +3,7 @@ package com.ganesh.kasi.learning.spring.program;
 import org.springframework.beans.factory.BeanNameAware;
 
 /**
- * Created by ganeshkasi on 27/09/15.
+ * Created by ganeshkasi on 27/09/15. @GaneshKasi
  */
 public class Circle implements Shape, BeanNameAware {
     private int value;
